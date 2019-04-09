@@ -1,3 +1,8 @@
+variable terraform_bucket_name {
+  default     = "terraform-state"
+  description = "The name of the bucket that will house terraform state files."
+}
+
 # Utility subnet CIDR
 variable utility_subnet_cidr {
   description = "CIDR for the utility subnet. This subnet is not HA."
