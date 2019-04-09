@@ -11,6 +11,6 @@ resource "aws_s3_bucket" "terraform_state_bucket" {
 resource "aws_s3_bucket_object" "region_key" {
   bucket = "${aws_s3_bucket.terraform_state_bucket.id}"
   acl    = "private"
-  key    = "${data.aws_region.current}"
+  key    = "${data.aws_region.current.name}"
   source = "/dev/null"
 }
