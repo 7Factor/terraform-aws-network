@@ -62,7 +62,3 @@ variable bastion_instance_type {
 variable bastion_key_name {
   description = "The key name for the bastion host without.pem on the end. Make sure you have access to it."
 }
-
-variable bastion_key_path {
-  description = "A folder, usually relative to root of the TF you're running, where the bastion key is stored."
-}

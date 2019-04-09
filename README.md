@@ -78,6 +78,5 @@ module "networking" {
   bastion_key_name       = "name-of-your-bastion-pem"
   utility_subnet_cidr    = "155.0.0.0/16"
   vpc_addl_address_space = ["172.0.0.0/16"]
-  bastion_key_path       = ""
 }
 ```
