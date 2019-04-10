@@ -25,12 +25,11 @@ EOF
 }
 
 resource "aws_instance" "bastion_hosts" {
-  count                   = "${var.bastion_count}"
-  ami                     = "${data.aws_ami.ec2_linux.id}"
-  instance_type           = "${var.bastion_instance_type}"
-  subnet_id               = "${aws_subnet.utility_subnet.id}"
-  key_name                = "${var.bastion_key_name}"
-  disable_api_termination = true
+  count         = "${var.bastion_count}"
+  ami           = "${data.aws_ami.ec2_linux.id}"
+  instance_type = "${var.bastion_instance_type}"
+  subnet_id     = "${aws_subnet.utility_subnet.id}"
+  key_name      = "${var.bastion_key_name}"
 
   vpc_security_group_ids = ["${aws_security_group.utility_hosts.id}"]
 
