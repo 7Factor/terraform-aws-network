@@ -1,5 +1,4 @@
 variable terraform_bucket_name {
-  default     = "terraform-state"
   description = "The name of the bucket that will house terraform state files."
 }
 
