@@ -1,9 +1,11 @@
 data "aws_ami" "ec2_linux" {
   most_recent = true
 
+  owners = [137112412989]
+
   filter {
     name   = "name"
-    values = ["amzn-ami-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-x86_64-ebs"]
   }
 
   filter {
@@ -25,17 +27,17 @@ EOF
 }
 
 resource "aws_instance" "bastion_hosts" {
-  count         = "${var.bastion_count}"
-  ami           = "${data.aws_ami.ec2_linux.id}"
+  count = "${var.bastion_count}"
+  ami = "${data.aws_ami.ec2_linux.id}"
   instance_type = "${var.bastion_instance_type}"
-  subnet_id     = "${aws_subnet.utility_subnet.id}"
-  key_name      = "${var.bastion_key_name}"
+  subnet_id = "${aws_subnet.utility_subnet.id}"
+  key_name = "${var.bastion_key_name}"
 
   vpc_security_group_ids = ["${aws_security_group.utility_hosts.id}"]
 
   user_data = "${base64encode(data.template_file.bastion_template.rendered)}"
 
-  tags {
+  tags = {
     Name = "Bastion Host ${count.index + 1}"
   }
 }

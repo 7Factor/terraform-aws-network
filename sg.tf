@@ -18,7 +18,7 @@ resource "aws_security_group" "utility_hosts" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "Utility Hosts (allows SSH)"
   }
 }
@@ -43,7 +43,7 @@ resource "aws_security_group" "allow_utility_access" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "Allow SSH from utility hosts"
   }
 }

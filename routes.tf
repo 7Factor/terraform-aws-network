@@ -3,7 +3,7 @@ resource "aws_route_table" "public_route_table" {
   vpc_id     = "${aws_vpc.primary_vpc.id}"
   depends_on = ["aws_internet_gateway.igw"]
 
-  tags {
+  tags = {
     Name = "Public routing table"
   }
 }
@@ -12,7 +12,7 @@ resource "aws_route_table" "private_route_table" {
   vpc_id     = "${aws_vpc.primary_vpc.id}"
   depends_on = ["aws_nat_gateway.nat_gw"]
 
-  tags {
+  tags = {
     Name = "Private routing table"
   }
 }
