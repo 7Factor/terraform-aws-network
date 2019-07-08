@@ -1,12 +1,11 @@
-# Required terraform version
 terraform {
-  required_version = ">=0.10.7"
+  required_version = ">=0.12.2"
 }
 
 resource "aws_vpc" "primary_vpc" {
   cidr_block = "${var.vpc_primary_cidr}"
 
-  tags {
+  tags = {
     Name = "Primary VPC"
   }
 }
@@ -28,7 +27,7 @@ resource "aws_subnet" "utility_subnet" {
   map_public_ip_on_launch = "${var.enable_utility_public_ips}"
   depends_on              = ["aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr"]
 
-  tags {
+  tags = {
     Name = "Utility Subnet"
   }
 }
@@ -45,7 +44,7 @@ resource "aws_subnet" "private_subnets" {
     "aws_vpc_ipv4_cidr_block_association.addl_subnet_cidrs",
   ]
 
-  tags {
+  tags = {
     Name = "Private Subnet (${lookup(var.public_private_subnet_pairs[count.index], "az")})"
     Tier = "Private Subnets"
   }
@@ -63,7 +62,7 @@ resource "aws_subnet" "public_subnets" {
     "aws_vpc_ipv4_cidr_block_association.addl_subnet_cidrs",
   ]
 
-  tags {
+  tags = {
     Name = "Public Subnet (${lookup(var.public_private_subnet_pairs[count.index], "az")})"
     Tier = "Public Subnets"
   }
@@ -81,7 +80,7 @@ resource "aws_subnet" "addl_private_subnets" {
     "aws_vpc_ipv4_cidr_block_association.addl_subnet_cidrs",
   ]
 
-  tags {
+  tags = {
     Name = "Private Only Subnet (${lookup(var.addl_private_subnets[count.index], "az")})"
     Tier = "Private Only Subnets"
   }
@@ -91,7 +90,7 @@ resource "aws_subnet" "addl_private_subnets" {
 resource "aws_internet_gateway" "igw" {
   vpc_id = "${aws_vpc.primary_vpc.id}"
 
-  tags {
+  tags = {
     Name = "IGW for public subnets"
   }
 }
@@ -100,7 +99,7 @@ resource "aws_internet_gateway" "igw" {
 resource "aws_eip" "nat_ip" {
   vpc = true
 
-  tags {
+  tags = {
     Name = "NAT EIP"
   }
 }
@@ -111,7 +110,7 @@ resource "aws_nat_gateway" "nat_gw" {
   allocation_id = "${aws_eip.nat_ip.id}"
   depends_on    = ["aws_eip.nat_ip"]
 
-  tags {
+  tags = {
     Name = "NAT Gateway for private subnets"
   }
 }
