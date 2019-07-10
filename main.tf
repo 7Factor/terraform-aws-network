@@ -1,9 +1,9 @@
 terraform {
-  required_version = ">=0.12.2"
+  required_version = ">=0.12.3"
 }
 
 resource "aws_vpc" "primary_vpc" {
-  cidr_block = "${var.vpc_primary_cidr}"
+  cidr_block = var.vpc_primary_cidr
 
   tags = {
     Name = "Primary VPC"
@@ -11,20 +11,20 @@ resource "aws_vpc" "primary_vpc" {
 }
 
 resource "aws_vpc_ipv4_cidr_block_association" "addl_subnet_cidrs" {
-  count      = "${length(var.vpc_addl_address_space)}"
-  cidr_block = "${var.vpc_addl_address_space[count.index]}"
-  vpc_id     = "${aws_vpc.primary_vpc.id}"
+  count      = length(var.vpc_addl_address_space)
+  cidr_block = var.vpc_addl_address_space[count.index]
+  vpc_id     = aws_vpc.primary_vpc.id
 }
 
 resource "aws_vpc_ipv4_cidr_block_association" "utility_subnet_cidr" {
-  cidr_block = "${var.utility_subnet_cidr}"
-  vpc_id     = "${aws_vpc.primary_vpc.id}"
+  cidr_block = var.utility_subnet_cidr
+  vpc_id     = aws_vpc.primary_vpc.id
 }
 
 resource "aws_subnet" "utility_subnet" {
-  vpc_id                  = "${aws_vpc.primary_vpc.id}"
-  cidr_block              = "${var.utility_subnet_cidr}"
-  map_public_ip_on_launch = "${var.enable_utility_public_ips}"
+  vpc_id                  = aws_vpc.primary_vpc.id
+  cidr_block              = var.utility_subnet_cidr
+  map_public_ip_on_launch = var.enable_utility_public_ips
   depends_on              = ["aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr"]
 
   tags = {
@@ -34,10 +34,10 @@ resource "aws_subnet" "utility_subnet" {
 
 # Create the private subnets for the public/private pairs
 resource "aws_subnet" "private_subnets" {
-  vpc_id            = "${aws_vpc.primary_vpc.id}"
-  count             = "${length(var.public_private_subnet_pairs)}"
-  cidr_block        = "${lookup(var.public_private_subnet_pairs[count.index], "cidr")}"
-  availability_zone = "${lookup(var.public_private_subnet_pairs[count.index], "az")}"
+  vpc_id            = aws_vpc.primary_vpc.id
+  count             = length(var.public_private_subnet_pairs)
+  cidr_block        = lookup(var.public_private_subnet_pairs[count.index], "cidr")
+  availability_zone = lookup(var.public_private_subnet_pairs[count.index], "az")
 
   depends_on = [
     "aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr",
@@ -52,10 +52,10 @@ resource "aws_subnet" "private_subnets" {
 
 # Create the public subnets for the public/private pairs
 resource "aws_subnet" "public_subnets" {
-  vpc_id            = "${aws_vpc.primary_vpc.id}"
-  count             = "${length(var.public_private_subnet_pairs)}"
-  cidr_block        = "${lookup(var.public_private_subnet_pairs[count.index], "public_cidr")}"
-  availability_zone = "${lookup(var.public_private_subnet_pairs[count.index], "az")}"
+  vpc_id            = aws_vpc.primary_vpc.id
+  count             = length(var.public_private_subnet_pairs)
+  cidr_block        = lookup(var.public_private_subnet_pairs[count.index], "public_cidr")
+  availability_zone = lookup(var.public_private_subnet_pairs[count.index], "az")
 
   depends_on = [
     "aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr",
@@ -70,10 +70,10 @@ resource "aws_subnet" "public_subnets" {
 
 # Create private only subnets.
 resource "aws_subnet" "addl_private_subnets" {
-  vpc_id            = "${aws_vpc.primary_vpc.id}"
-  count             = "${length(var.addl_private_subnets)}"
-  cidr_block        = "${lookup(var.addl_private_subnets[count.index], "cidr")}"
-  availability_zone = "${lookup(var.addl_private_subnets[count.index], "az")}"
+  vpc_id            = aws_vpc.primary_vpc.id
+  count             = length(var.addl_private_subnets)
+  cidr_block        = lookup(var.addl_private_subnets[count.index], "cidr")
+  availability_zone = lookup(var.addl_private_subnets[count.index], "az")
 
   depends_on = [
     "aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr",
@@ -88,7 +88,7 @@ resource "aws_subnet" "addl_private_subnets" {
 
 # Create primary IGW
 resource "aws_internet_gateway" "igw" {
-  vpc_id = "${aws_vpc.primary_vpc.id}"
+  vpc_id = aws_vpc.primary_vpc.id
 
   tags = {
     Name = "IGW for public subnets"
@@ -106,8 +106,8 @@ resource "aws_eip" "nat_ip" {
 
 # NAT gateway
 resource "aws_nat_gateway" "nat_gw" {
-  subnet_id     = "${aws_subnet.utility_subnet.id}"
-  allocation_id = "${aws_eip.nat_ip.id}"
+  subnet_id     = aws_subnet.utility_subnet.id
+  allocation_id = aws_eip.nat_ip.id
   depends_on    = ["aws_eip.nat_ip"]
 
   tags = {
