@@ -33,7 +33,7 @@ resource "aws_subnet" "utility_subnet" {
   vpc_id                  = aws_vpc.primary_vpc.id
   cidr_block              = var.utility_subnet_cidr
   map_public_ip_on_launch = var.enable_utility_public_ips
-  depends_on              = ["aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr"]
+  depends_on              = [aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr]
 
   tags = {
     Name = "Utility Subnet"
@@ -48,8 +48,8 @@ resource "aws_subnet" "private_subnets" {
   availability_zone = lookup(var.public_private_subnet_pairs[count.index], "az")
 
   depends_on = [
-    "aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr",
-    "aws_vpc_ipv4_cidr_block_association.addl_subnet_cidrs",
+    aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr,
+    aws_vpc_ipv4_cidr_block_association.addl_subnet_cidrs,
   ]
 
   tags = {
@@ -66,8 +66,8 @@ resource "aws_subnet" "public_subnets" {
   availability_zone = lookup(var.public_private_subnet_pairs[count.index], "az")
 
   depends_on = [
-    "aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr",
-    "aws_vpc_ipv4_cidr_block_association.addl_subnet_cidrs",
+    aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr,
+    aws_vpc_ipv4_cidr_block_association.addl_subnet_cidrs,
   ]
 
   tags = {
@@ -84,8 +84,8 @@ resource "aws_subnet" "addl_private_subnets" {
   availability_zone = lookup(var.addl_private_subnets[count.index], "az")
 
   depends_on = [
-    "aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr",
-    "aws_vpc_ipv4_cidr_block_association.addl_subnet_cidrs",
+    aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr,
+    aws_vpc_ipv4_cidr_block_association.addl_subnet_cidrs,
   ]
 
   tags = {
@@ -116,7 +116,7 @@ resource "aws_eip" "nat_ip" {
 resource "aws_nat_gateway" "nat_gw" {
   subnet_id     = aws_subnet.utility_subnet.id
   allocation_id = aws_eip.nat_ip.id
-  depends_on    = ["aws_eip.nat_ip"]
+  depends_on    = [aws_eip.nat_ip]
 
   tags = {
     Name = "NAT Gateway for private subnets"
