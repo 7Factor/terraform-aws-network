@@ -2,6 +2,14 @@ terraform {
   required_version = ">=0.12.3"
 }
 
+provider aws {
+  version = "~> 2.62"
+}
+
+provider template {
+  version = "~> 2.1"
+}
+
 resource "aws_vpc" "primary_vpc" {
   cidr_block = var.vpc_primary_cidr
 
