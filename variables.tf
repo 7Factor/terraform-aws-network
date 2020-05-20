@@ -13,7 +13,7 @@ variable enable_utility_public_ips {
 # a corresponding public subnet. This is especially usefull if you're
 # going to load balance something inside a private subnet.
 variable public_private_subnet_pairs {
-  type        = "list"
+  type        = list
   description = "A list of maps that connect public and private subnet pairs."
 }
 
@@ -21,7 +21,7 @@ variable public_private_subnet_pairs {
 # subnet associated with them. They will be added to the appropriate
 # routing table to ensure NAT'd access to the internet.
 variable addl_private_subnets {
-  type        = "list"
+  type        = list
   default     = []
   description = "A list of private only subnets with no public subnets associated with them. Defaults to empty list."
 }
@@ -35,7 +35,7 @@ variable vpc_primary_cidr {
 # List out all the additional address space you need in addition to the primary CIDR. You must include all subnets
 # or you will get failures during creation of those subnets.
 variable vpc_addl_address_space {
-  type        = "list"
+  type        = list
   description = "Additional high level address space to add to the VPC. You must provide this, it can be an empty list."
 }
 

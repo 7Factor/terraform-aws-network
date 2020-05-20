@@ -1,7 +1,7 @@
 # Build out the route tables before we associate routes with them.
 resource "aws_route_table" "public_route_table" {
   vpc_id     = aws_vpc.primary_vpc.id
-  depends_on = ["aws_internet_gateway.igw"]
+  depends_on = [aws_internet_gateway.igw]
 
   tags = {
     Name = "Public routing table"
@@ -10,7 +10,7 @@ resource "aws_route_table" "public_route_table" {
 
 resource "aws_route_table" "private_route_table" {
   vpc_id     = aws_vpc.primary_vpc.id
-  depends_on = ["aws_nat_gateway.nat_gw"]
+  depends_on = [aws_nat_gateway.nat_gw]
 
   tags = {
     Name = "Private routing table"
@@ -38,14 +38,14 @@ resource "aws_route_table_association" "public_subnet_routes" {
   count          = length(var.public_private_subnet_pairs)
   route_table_id = aws_route_table.public_route_table.id
   subnet_id      = element(aws_subnet.public_subnets.*.id, count.index)
-  depends_on     = ["aws_route_table.public_route_table"]
+  depends_on     = [aws_route_table.public_route_table]
 }
 
 # Let's also add the utility subnet to the public routes.
 resource "aws_route_table_association" "utility_subnet_routes" {
   route_table_id = aws_route_table.public_route_table.id
   subnet_id      = aws_subnet.utility_subnet.id
-  depends_on     = ["aws_route_table.public_route_table"]
+  depends_on     = [aws_route_table.public_route_table]
 }
 
 # Set main route table to private
