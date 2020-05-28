@@ -16,6 +16,9 @@ backend.tf
 # dependencies
 /node_modules
 
+# testing
+.kitchen/
+
 # IDEs and editors
 /.idea
 .project
