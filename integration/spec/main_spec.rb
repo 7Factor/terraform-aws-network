@@ -55,3 +55,17 @@ describe internet_gateway(ENVVARS[:internet_gateway_id][:value]) do
   it { should be_attached_to(ENVVARS[:vpc_id][:value]) }
   it { should have_tag('Name').value('IGW for public subnets')}
 end
+
+describe 'the nat' do
+  describe eip(ENVVARS[:nat_eip][:value]) do
+    it { should exist }
+  end
+
+  describe nat_gateway(ENVVARS[:nat_gateway_id][:value]) do
+    it { should exist }
+    it { should be_available }
+    it { should have_eip(ENVVARS[:nat_eip][:value]) }
+    it { should have_tag('Name').value('NAT Gateway for private subnets')}
+    it { should belong_to_vpc(ENVVARS[:vpc_id][:value]) }
+  end
+end

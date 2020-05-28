@@ -42,3 +42,13 @@ output "internet_gateway_id" {
   value = aws_internet_gateway.igw.id
   description = "The ID of the Internet Gateway."
 }
+
+output "nat_eip" {
+  value = aws_eip.nat_ip.public_ip
+  description = "The Public IP of the NAT EIP."
+}
+
+output "nat_gateway_id" {
+  value = aws_nat_gateway.nat_gw.id
+  description = "The ID of the NAT Gateway."
+}
