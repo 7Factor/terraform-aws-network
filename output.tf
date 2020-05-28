@@ -37,3 +37,8 @@ output "vpc_id" {
   value       = aws_vpc.primary_vpc.id
   description = "The ID of the primary AWS VPC."
 }
+
+output "internet_gateway_id" {
+  value = aws_internet_gateway.igw.id
+  description = "The ID of the Internet Gateway."
+}

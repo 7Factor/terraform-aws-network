@@ -49,3 +49,9 @@ describe 'the additional private subnets' do
     has_correct_configuration('Private Only', 'us-east-1d')
   end
 end
+
+describe internet_gateway(ENVVARS[:internet_gateway_id][:value]) do
+  it { should exist }
+  it { should be_attached_to(ENVVARS[:vpc_id][:value]) }
+  it { should have_tag('Name').value('IGW for public subnets')}
+end
