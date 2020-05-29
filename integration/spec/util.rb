@@ -1,4 +1,12 @@
-def has_correct_configuration(type, az)
+def assert_local_associations
+  describe 'the local associations' do
+    it { should have_route(TFVARS['vpc_primary_cidr']).target(gateway: 'local') }
+    it { should have_route(TFVARS['utility_subnet_cidr']).target(gateway: 'local') }
+    it { should have_route(TFVARS['vpc_addl_address_space'][0]).target(gateway: 'local') }
+  end
+end
+
+def assert_subnet_configuration(type, az)
   it { should exist}
   it { should be_available }
   it { should have_tag('Name').value(type + ' Subnet (' + az +')')}

@@ -22,31 +22,31 @@ end
 
 describe 'the public subnets' do
   describe subnet(ENVVARS[:public_subnets][:value][0]) do
-    has_correct_configuration('Public', 'us-east-1a')
+    assert_subnet_configuration('Public', 'us-east-1a')
   end
 
   describe subnet(ENVVARS[:public_subnets][:value][1]) do
-    has_correct_configuration('Public', 'us-east-1b')
+    assert_subnet_configuration('Public', 'us-east-1b')
   end
 end
 
 describe 'the private subnets' do
   describe subnet(ENVVARS[:private_subnets][:value][0]) do
-    has_correct_configuration('Private', 'us-east-1a')
+    assert_subnet_configuration('Private', 'us-east-1a')
   end
 
   describe subnet(ENVVARS[:private_subnets][:value][1]) do
-    has_correct_configuration('Private', 'us-east-1b')
+    assert_subnet_configuration('Private', 'us-east-1b')
   end
 end
 
 describe 'the additional private subnets' do
   describe subnet(ENVVARS[:addl_private_subnets][:value][0]) do
-    has_correct_configuration('Private Only', 'us-east-1c')
+    assert_subnet_configuration('Private Only', 'us-east-1c')
   end
 
   describe subnet(ENVVARS[:addl_private_subnets][:value][1]) do
-    has_correct_configuration('Private Only', 'us-east-1d')
+    assert_subnet_configuration('Private Only', 'us-east-1d')
   end
 end
 
