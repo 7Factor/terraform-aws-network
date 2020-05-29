@@ -1,12 +1,14 @@
 # Terraform state
 .terraform
 terraform.tfstate
+terraform.tfstate.d
 terraform.tfstate.backup
 
 # Secrets and whatnot
 keys/
 secrets.tfvars
 backend.tf
+testing.tfvars
 
 # compiled output
 /dist
@@ -15,6 +17,9 @@ backend.tf
 
 # dependencies
 /node_modules
+
+# testing
+.kitchen/
 
 # IDEs and editors
 /.idea
