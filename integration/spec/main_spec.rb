@@ -12,11 +12,11 @@ describe vpc(ENVVARS[:vpc_id][:value]) do
   it { should have_tag('Name').value('Primary VPC') }
 
   it 'should have the correct cidr blocks' do
-    cidr_blocks = subject.cidr_block_association_set.map {|cidr_block| cidr_block}
+    cidr_blocks = subject.cidr_block_association_set.map {|item| item.cidr_block}
 
-    expect(cidr_blocks[0].cidr_block).to include TFVARS['vpc_primary_cidr']
-    expect(cidr_blocks[1].cidr_block).to include TFVARS['vpc_addl_address_space'][0]
-    expect(cidr_blocks[2].cidr_block).to include TFVARS['utility_subnet_cidr']
+    expect(cidr_blocks).to include TFVARS['vpc_primary_cidr']
+    expect(cidr_blocks).to include TFVARS['vpc_addl_address_space'][0]
+    expect(cidr_blocks).to include TFVARS['utility_subnet_cidr']
   end
 end
 
