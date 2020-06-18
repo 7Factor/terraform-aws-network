@@ -8,6 +8,11 @@ variable enable_utility_public_ips {
   description = "Enables public IP addresses for the utility subnet. On by default."
 }
 
+variable vpc_name {
+  default     = "Primary VPC"
+  description = "Name of the VPC. Shows up in tags. Defaults to 'Primary VPC'"
+}
+
 # This will actually be a list of maps, which stores information about
 # the public/private subnet configuration. Every private subnet needs
 # a corresponding public subnet. This is especially usefull if you're

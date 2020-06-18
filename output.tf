@@ -1,5 +1,5 @@
 output "aws_ami_id" {
-  value = data.aws_ami.ec2_linux.id
+  value       = data.aws_ami.ec2_linux.id
   description = "The ID of the AWS Linux AMI, used by the Bastion Hosts."
 }
 
@@ -19,7 +19,7 @@ output "public_subnets" {
 }
 
 output "utility_subnet_id" {
-  value = aws_subnet.utility_subnet.id
+  value       = aws_subnet.utility_subnet.id
   description = "The utility subnet ID."
 }
 
@@ -34,7 +34,7 @@ output "addl_private_subnets" {
 }
 
 output "bastion_host_ids" {
-  value = aws_instance.bastion_hosts.*.id
+  value       = aws_instance.bastion_hosts.*.id
   description = "A list of ids for your bastion hosts."
 }
 
@@ -54,26 +54,26 @@ output "vpc_id" {
 }
 
 output "internet_gateway_id" {
-  value = aws_internet_gateway.igw.id
+  value       = aws_internet_gateway.igw.id
   description = "The ID of the Internet Gateway."
 }
 
 output "nat_eip" {
-  value = aws_eip.nat_ip.public_ip
+  value       = aws_eip.nat_ip.public_ip
   description = "The Public IP of the NAT EIP."
 }
 
 output "nat_gateway_id" {
-  value = aws_nat_gateway.nat_gw.id
+  value       = aws_nat_gateway.nat_gw.id
   description = "The ID of the NAT Gateway."
 }
 
 output "public_route_table_id" {
-  value = aws_route_table.public_route_table.id
+  value       = aws_route_table.public_route_table.id
   description = "The ID of the public route table."
 }
 
 output "private_route_table_id" {
-  value = aws_route_table.private_route_table.id
+  value       = aws_route_table.private_route_table.id
   description = "The ID of the private route table."
 }
