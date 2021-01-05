@@ -15,7 +15,7 @@ output "allow_utility_access_sg" {
 
 output "public_subnets" {
   value       = aws_subnet.public_subnets.*.id
-  description = "Public subnet IDs configured with a cooresponding private subnet."
+  description = "Public subnet IDs configured with a corresponding private subnet."
 }
 
 output "utility_subnet_id" {
@@ -45,7 +45,7 @@ output "bastion_host_public_ips" {
 
 output "bastion_host_private_ips" {
   value       = aws_instance.bastion_hosts.*.private_ip
-  description = "A list of pribate IP addresses for your bastion hosts."
+  description = "A list of private IP addresses for your bastion hosts."
 }
 
 output "vpc_id" {
