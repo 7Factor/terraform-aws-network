@@ -25,6 +25,10 @@ sudo yum -y update
 EOF
 }
 
+locals {
+  tags = var.bastion_tags
+}
+
 resource "aws_instance" "bastion_hosts" {
   count         = var.bastion_count
   ami           = data.aws_ami.ec2_linux.id
@@ -38,5 +42,13 @@ resource "aws_instance" "bastion_hosts" {
 
   tags = {
     Name = "Bastion Host ${count.index + 1}"
+  }
+
+  dynamic "tag" {
+    for_each = local.tags
+    content {
+      key   = tag.value["key"]
+      value = tag.value["value"]
+    }
   }
 }
