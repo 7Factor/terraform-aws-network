@@ -33,7 +33,7 @@ locals {
   }]
   regularTags = [{
     key   = "Name"
-    value = "Bastion Host ${var.bastion_count.index + 1}"
+    value = "Bastion Host ${var.bastion_count + 1}"
   }]
 }
 
