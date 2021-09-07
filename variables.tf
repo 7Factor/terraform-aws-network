@@ -67,3 +67,12 @@ variable bastion_instance_type {
 variable bastion_key_name {
   description = "The key name for the bastion host without.pem on the end. Make sure you have access to it."
 }
+
+variable "bastion_tags" {
+  default     = []
+  description = "Additional bastion host tags for patch groups and such"
+  type = list(object({
+    key   = string
+    value = string
+  }))
+}
