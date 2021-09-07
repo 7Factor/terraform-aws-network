@@ -25,7 +25,7 @@ sudo yum -y update
 EOF
 }
 
-
+# Cannot use dynamic tags with this resource type
 locals {
   customTags = [for tag in var.bastion_tags : {
     key   = tag.value["key"]
