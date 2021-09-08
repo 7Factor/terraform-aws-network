@@ -68,11 +68,14 @@ variable bastion_key_name {
   description = "The key name for the bastion host without.pem on the end. Make sure you have access to it."
 }
 
-variable "bastion_tags" {
-  default     = []
-  description = "Additional bastion host tags for patch groups and such"
-  type = list(object({
+variable bastion_patchGroup_tag {
+  default = {
+    key   = "PatchGroup"
+    value = "None"
+  }
+  description = "Optional bastion host patch groups tag"
+  type = object({
     key   = string
     value = string
-  }))
+  })
 }
