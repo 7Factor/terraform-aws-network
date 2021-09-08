@@ -50,7 +50,7 @@ variable ssh_ingress_cidr {
   description = "A CIDR describing where the bastion hosts boxes may come in from. This is defaulted to 0.0.0.0/0; change if you have a VPN."
 }
 
-##### BASTION HOST VARIABLES #####
+###### BASTION HOST VARIABLES ######
 
 # The number of bastion hosts to create. Defaults to 1.
 variable bastion_count {
