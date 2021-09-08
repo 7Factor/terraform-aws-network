@@ -27,15 +27,14 @@ EOF
 
 # Cannot use dynamic tags with this resource type
 locals {
-  customTags = [for tag in var.bastion_tags : {
-    key   = tag.value["key"]
-    value = tag.value["value"]
-  }]
-  regularTags = [{
+  tags = {
+    key   = var.bastion_patchGroup_tag.key
+    value = var.bastion_patchGroup_tag.value,
     key   = "Name"
     value = "Bastion Host ${var.bastion_count + 1}"
-  }]
+  }
 }
+
 
 resource "aws_instance" "bastion_hosts" {
   count         = var.bastion_count
@@ -43,7 +42,7 @@ resource "aws_instance" "bastion_hosts" {
   instance_type = var.bastion_instance_type
   subnet_id     = aws_subnet.utility_subnet.id
   key_name      = var.bastion_key_name
-  tags          = concat(local.customTags, local.regularTags)
+  tags          = local.tags
 
   vpc_security_group_ids = [aws_security_group.utility_hosts.id]
 
