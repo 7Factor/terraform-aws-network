@@ -77,3 +77,8 @@ output "private_route_table_id" {
   value       = aws_route_table.private_route_table.id
   description = "The ID of the private route table."
 }
+
+output "bastion_instance_role_name" {
+  value       = aws_iam_role.bastion_role.name
+  description = "The ID for the role that grants the bastion instance AWS permissions."
+}
