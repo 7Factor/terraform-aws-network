@@ -68,12 +68,13 @@ variable bastion_key_name {
   description = "The key name for the bastion host without.pem on the end. Make sure you have access to it."
 }
 
+# Patch group tag for patching with ssm. Defaults to none.
 variable bastion_patchGroup_tag {
   default = {
-    key   = "PatchGroup"
+    key   = "Patch Group"
     value = "None"
   }
-  description = "Optional bastion host patch groups tag"
+  description = "Optional bastion host patch group tag"
   type = object({
     key   = string
     value = string
