@@ -22,3 +22,12 @@ resource "aws_iam_role" "bastion_role" {
 }
 EOF
 }
+
+data "aws_iam_policy" "aws_ssm_default" {
+  name = "AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_role_policy_attachment" "add_ssm_for_patching" {
+  role       = aws_iam_role.bastion_role.name
+  policy_arn = data.aws_iam_policy.aws_ssm_default.arn
+}

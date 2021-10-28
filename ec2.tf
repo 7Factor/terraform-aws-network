@@ -25,15 +25,6 @@ sudo yum -y update
 EOF
 }
 
-# Cannot use dynamic tags with aws_instance resource
-locals {
-  tags = {
-    "Patch Group" = var.bastion_patchGroup_tag.value,
-    Name          = "Bastion Host ${var.bastion_count}"
-  }
-}
-
-
 resource "aws_instance" "bastion_hosts" {
   count                = var.bastion_count
   ami                  = data.aws_ami.ec2_linux.id
@@ -41,7 +32,11 @@ resource "aws_instance" "bastion_hosts" {
   subnet_id            = aws_subnet.utility_subnet.id
   iam_instance_profile = aws_iam_instance_profile.bastion_profile.id
   key_name             = var.bastion_key_name
-  tags                 = local.tags
+
+  tags = {
+    "Patch Group" = local.bastion_patch_group_name
+    Name          = "Bastion Host ${var.bastion_count}"
+  }
 
   vpc_security_group_ids = [aws_security_group.utility_hosts.id]
 
