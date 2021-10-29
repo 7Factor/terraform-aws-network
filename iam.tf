@@ -1,11 +1,11 @@
 # Creates an empty role so that policies can be attached as needed
 resource "aws_iam_instance_profile" "bastion_profile" {
-  name = "bastion-profile"
+  name = "${replace(lower(var.vpc_name), " ", "-")}-bastion-profile"
   role = aws_iam_role.bastion_role.name
 }
 
 resource "aws_iam_role" "bastion_role" {
-  name = "${replace(lower(var.vpc_name), " ", "-")}-BastionRole"
+  name = "${replace(var.vpc_name, " ", "")}BastionRole"
 
   assume_role_policy = <<EOF
 {
