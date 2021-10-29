@@ -35,7 +35,7 @@ resource "aws_instance" "bastion_hosts" {
 
   tags = {
     "Patch Group" = local.bastion_patch_group_name
-    Name          = "Bastion Host ${var.bastion_count}"
+    Name          = "${var.vpc_name} Bastion Host ${var.bastion_count}"
   }
 
   vpc_security_group_ids = [aws_security_group.utility_hosts.id]
