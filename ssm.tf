@@ -6,7 +6,7 @@ data "aws_ssm_patch_baseline" "centos_patch_baseline" {
 }
 
 locals {
-  bastion_patch_group_name = "bastions"
+  bastion_patch_group_name = "${var.vpc_name} Bastions"
 }
 
 # Keeping patch groups together with this locals block to reduce confusion.
