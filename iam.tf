@@ -5,7 +5,7 @@ resource "aws_iam_instance_profile" "bastion_profile" {
 }
 
 resource "aws_iam_role" "bastion_role" {
-  name = "RoleForBastion"
+  name = "${replace(lower(var.vpc_name), " ", "-")}-BastionRole"
 
   assume_role_policy = <<EOF
 {
