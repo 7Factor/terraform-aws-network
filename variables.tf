@@ -77,3 +77,15 @@ variable "schedule_timezone" {
   default     = "America/New_York"
   description = "The timezone inside of which to run the patch windows. Defaults to US eastern."
 }
+
+variable "enable_dns_hostnames" {
+  description = "A boolean flag to enable/disable DNS hostnames in the VPC. Enabling this is required for using private hosted zones in Route 53."
+  type        = bool
+  default     = false
+}
+
+variable "enable_dns_support" {
+  description = "A boolean flag to enable/disable DNS support in the VPC. Enabling this is required for using private hosted zones in Route 53."
+  type        = bool
+  default     = true
+}
