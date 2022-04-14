@@ -18,13 +18,6 @@ data "aws_ami" "ec2_linux" {
   }
 }
 
-data "template_file" "bastion_template" {
-  template = <<EOF
-#!/bin/bash
-sudo yum -y update
-EOF
-}
-
 resource "aws_instance" "bastion_hosts" {
   count                = var.bastion_count
   ami                  = data.aws_ami.ec2_linux.id
@@ -40,5 +33,5 @@ resource "aws_instance" "bastion_hosts" {
 
   vpc_security_group_ids = [aws_security_group.utility_hosts.id]
 
-  user_data = base64encode(data.template_file.bastion_template.rendered)
+  user_data = base64encode(templatefile("${path.module}/bastion.tftpl", {}))
 }
