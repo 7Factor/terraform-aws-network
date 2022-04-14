@@ -1,5 +1,12 @@
 terraform {
   required_version = ">=0.12.3"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3"
+    }
+  }
 }
 
 resource "aws_vpc" "primary_vpc" {
