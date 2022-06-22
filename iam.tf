@@ -24,7 +24,7 @@ EOF
 }
 
 data "aws_iam_policy" "aws_ssm_default" {
-  name = "AmazonSSMManagedInstanceCore"
+  arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
 resource "aws_iam_role_policy_attachment" "add_ssm_for_patching" {
