@@ -18,7 +18,11 @@ variable "vpc_name" {
 # a corresponding public subnet. This is especially usefull if you're
 # going to load balance something inside a private subnet.
 variable "public_private_subnet_pairs" {
-  type        = list(any)
+  type = list(object({
+    az          = string,
+    cidr        = string,
+    public_cidr = string
+  }))
   description = "A list of maps that connect public and private subnet pairs."
 }
 
@@ -26,7 +30,10 @@ variable "public_private_subnet_pairs" {
 # subnet associated with them. They will be added to the appropriate
 # routing table to ensure NAT'd access to the internet.
 variable "addl_private_subnets" {
-  type        = list(any)
+  type = list(object({
+    az   = string,
+    cidr = string,
+  }))
   default     = []
   description = "A list of private only subnets with no public subnets associated with them. Defaults to empty list."
 }
