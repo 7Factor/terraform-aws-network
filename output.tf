@@ -14,37 +14,37 @@ output "allow_utility_access_sg" {
 }
 
 output "public_subnets" {
-  value       = aws_subnet.public_subnets.*.id
+  value       = aws_subnet.public_subnets[*].id
   description = "Public subnet IDs configured with a corresponding private subnet."
 }
 
 output "utility_subnet_id" {
-  value       = aws_subnet.utility_subnets.*.id
+  value       = aws_subnet.utility_subnets[*].id
   description = "The utility subnet IDs."
 }
 
 output "private_subnets" {
-  value       = aws_subnet.private_subnets.*.id
+  value       = aws_subnet.private_subnets[*].id
   description = "Private subnet IDs configured with a corresponding public subnet."
 }
 
 output "addl_private_subnets" {
-  value       = aws_subnet.addl_private_subnets.*.id
+  value       = aws_subnet.addl_private_subnets[*].id
   description = "Subnets configured with no public pairs. This doesn't mean they don't have a corresponding public subnet."
 }
 
 output "bastion_host_ids" {
-  value       = aws_instance.bastion_hosts.*.id
+  value       = aws_instance.bastion_hosts[*].id
   description = "A list of ids for your bastion hosts."
 }
 
 output "bastion_host_public_ips" {
-  value       = aws_instance.bastion_hosts.*.public_ip
+  value       = aws_instance.bastion_hosts[*].public_ip
   description = "A list of public IP addresses for your bastion hosts."
 }
 
 output "bastion_host_private_ips" {
-  value       = aws_instance.bastion_hosts.*.private_ip
+  value       = aws_instance.bastion_hosts[*].private_ip
   description = "A list of pribate IP addresses for your bastion hosts."
 }
 
