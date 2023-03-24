@@ -1,7 +1,7 @@
 # Create private only subnets.
 resource "aws_subnet" "addl_private_subnets" {
   vpc_id            = aws_vpc.primary_vpc.id
-  for_each             = var.addl_private_subnets
+  for_each          = var.addl_private_subnets
   cidr_block        = each.value.cidr
   availability_zone = each.value.az
 

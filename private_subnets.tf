@@ -27,7 +27,7 @@ resource "aws_subnet" "private_subnets" {
 # Create the EIPs for the NAT gateways first.
 resource "aws_eip" "nat_ips" {
   count = length(var.availability_zones)
-  vpc = true
+  vpc   = true
 
   tags = {
     Name = "NAT EIP"
@@ -51,7 +51,7 @@ resource "aws_nat_gateway" "nat_gws" {
 }
 
 resource "aws_route_table" "private_route_tables" {
-  for_each = var.availability_zones
+  for_each   = var.availability_zones
   vpc_id     = aws_vpc.primary_vpc.id
   depends_on = [aws_nat_gateway.nat_gws]
 
@@ -62,7 +62,7 @@ resource "aws_route_table" "private_route_tables" {
 
 # Add the NAT gateways to private route tables
 resource "aws_route" "private_subnets_to_nat" {
-  for_each = aws_nat_gateway.nat_gws
+  for_each               = aws_nat_gateway.nat_gws
   route_table_id         = aws_route_table.private_route_tables[each.key].id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = each.value.id
@@ -73,7 +73,7 @@ resource "aws_route_table_association" "private_route_associations" {
   for_each = flatten([
     for index, nat in aws_nat_gateway.nat_gws : [
       for route_table in aws_route.private_subnets_to_nat : {
-        subnet_id = nat.subnet_id
+        subnet_id      = nat.subnet_id
         route_table_id = route_table.id
       } if route_table.nat_gateway_id == nat.id
     ]
@@ -84,7 +84,7 @@ resource "aws_route_table_association" "private_route_associations" {
 
 # Set up a main route table with no routes to protect new subnets by default
 resource "aws_route_table" "main_route_table" {
-  vpc_id     = aws_vpc.primary_vpc.id
+  vpc_id = aws_vpc.primary_vpc.id
 
   tags = {
     Name = "Main routing table"

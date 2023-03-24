@@ -21,8 +21,8 @@ variable "availability_zones" {
   type = list(object({
     az = string,
     public_private_subnet_pairs = list(object({
-      cidr        = string,
-      public_cidr = string,
+      cidr         = string,
+      public_cidr  = string,
       utility_cidr = string
     }))
   }))
