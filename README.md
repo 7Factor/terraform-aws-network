@@ -62,18 +62,24 @@ module "networking" {
   source  = "7Factor/networking/aws"
   version = "~> 1"
 
-  public_private_subnet_pairs = [
-    {
-      az          = "us-east-1a"
-      cidr        = "172.0.1.0/24"
-      public_cidr = "10.0.1.0/24"
-    },
-    {
-      az          = "us-east-1b"
-      cidr        = "172.0.2.0/24"
-      public_cidr = "10.0.2.0/24"
-    },
-  ]
+  az_subnet_pairs = {
+    "us-east-1a": [
+      {
+        "cidr" = "172.0.1.0/24"
+        "public_cidr" = "10.0.1.0/24"
+      },
+      {
+        "cidr" = "172.0.2.0/24"
+        "public_cidr" = "10.0.2.0/24"
+      }
+    ]
+    "us-east-1b": [
+      {
+        "cidr" = "172.0.3.0/24"
+        "public_cidr" = "10.0.3.0/24"
+      },
+    ]
+  }
   bastion_instance_type  = "t2.micro"
   terraform_version      = "0.10.7"
   vpc_primary_cidr       = "10.0.0.0/16"
