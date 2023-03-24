@@ -65,7 +65,7 @@ variable "ssh_ingress_cidr" {
 # The number of bastion hosts to create. Defaults to 1.
 variable "bastion_count" {
   default     = 1
-  description = "The number of bastion hosts to create. Defaults to one."
+  description = "The number of bastion hosts to create. Defaults to one. Each bastion host will be created in a separate AZ"
 }
 
 # The instance type for bastions. Defaults to the free tier.
