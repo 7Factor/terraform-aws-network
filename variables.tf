@@ -13,10 +13,9 @@ variable "vpc_name" {
   description = "Name of the VPC. Shows up in tags. Defaults to 'Primary VPC'"
 }
 
-# This will actually be a list of maps, which stores information about
-# the public/private subnet configuration. Every private subnet needs
-# a corresponding public subnet. This is especially useful if you're
-# going to load balance something inside a private subnet.
+# A list of availability zones and their associated subnet pairs. Every private subnet
+# needs a corresponding public subnet. This is especially useful if you're going to load
+# balance something inside a private subnet.
 variable "availability_zones" {
   type = list(object({
     az = string,
@@ -65,7 +64,7 @@ variable "ssh_ingress_cidr" {
 # The number of bastion hosts to create. Defaults to 1.
 variable "bastion_count" {
   default     = 1
-  description = "The number of bastion hosts to create. Defaults to one. Each bastion host will be created in a separate AZ"
+  description = "The number of bastion hosts to create. Defaults to one. Each bastion host will be created in a separate AZ, so you need at least one AZ per bastion host."
 }
 
 # The instance type for bastions. Defaults to the free tier.
