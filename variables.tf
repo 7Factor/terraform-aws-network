@@ -1,6 +1,6 @@
 # Utility subnet CIDR
 variable "utility_subnet_cidr" {
-  description = "CIDR for the utility subnet. This subnet is not HA."
+  description = "CIDR for the utility subnets."
 }
 
 variable "enable_utility_public_ips" {
@@ -22,7 +22,8 @@ variable "availability_zones" {
     az = string,
     public_private_subnet_pairs = list(object({
       cidr        = string,
-      public_cidr = string
+      public_cidr = string,
+      utility_cidr = string
     }))
   }))
   description = "A list of availability zones with associated public and private subnet pairs."

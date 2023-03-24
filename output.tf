@@ -15,12 +15,12 @@ output "allow_utility_access_sg" {
 
 output "public_subnets" {
   value       = aws_subnet.public_subnets.*.id
-  description = "Public subnet IDs configured with a cooresponding private subnet."
+  description = "Public subnet IDs configured with a corresponding private subnet."
 }
 
 output "utility_subnet_id" {
-  value       = aws_subnet.utility_subnet.id
-  description = "The utility subnet ID."
+  value       = aws_subnet.utility_subnets.*.id
+  description = "The utility subnet IDs."
 }
 
 output "private_subnets" {
@@ -59,13 +59,13 @@ output "internet_gateway_id" {
 }
 
 output "nat_eip" {
-  value       = aws_eip.nat_ip.public_ip
-  description = "The Public IP of the NAT EIP."
+  value       = aws_eip.nat_ips[*].public_ip
+  description = "The Public IP of the NAT EIPs."
 }
 
 output "nat_gateway_id" {
-  value       = aws_nat_gateway.nat_gw.id
-  description = "The ID of the NAT Gateway."
+  value       = aws_nat_gateway.nat_gws[*].id
+  description = "The ID of the NAT Gateways."
 }
 
 output "public_route_table_id" {
@@ -74,8 +74,8 @@ output "public_route_table_id" {
 }
 
 output "private_route_table_id" {
-  value       = aws_route_table.private_route_table.id
-  description = "The ID of the private route table."
+  value       = aws_route_table.private_route_tables[*].id
+  description = "The ID of the private route tables."
 }
 
 output "bastion_instance_role_name" {
