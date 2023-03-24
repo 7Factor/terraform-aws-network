@@ -15,15 +15,17 @@ variable "vpc_name" {
 
 # This will actually be a list of maps, which stores information about
 # the public/private subnet configuration. Every private subnet needs
-# a corresponding public subnet. This is especially usefull if you're
+# a corresponding public subnet. This is especially useful if you're
 # going to load balance something inside a private subnet.
-variable "public_private_subnet_pairs" {
+variable "availability_zones" {
   type = list(object({
-    az          = string,
-    cidr        = string,
-    public_cidr = string
+    az = string,
+    public_private_subnet_pairs = list(object({
+      cidr        = string,
+      public_cidr = string
+    }))
   }))
-  description = "A list of maps that connect public and private subnet pairs."
+  description = "A list of availability zones with associated public and private subnet pairs."
 }
 
 # This is a list of additional private subnets with no automatic public

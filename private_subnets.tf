@@ -1,9 +1,16 @@
 # Create the private subnets for the public/private pairs
 resource "aws_subnet" "private_subnets" {
-  vpc_id            = aws_vpc.primary_vpc.id
-  count             = length(var.public_private_subnet_pairs)
-  cidr_block        = lookup(var.public_private_subnet_pairs[count.index], "cidr")
-  availability_zone = lookup(var.public_private_subnet_pairs[count.index], "az")
+  vpc_id = aws_vpc.primary_vpc.id
+  for_each = flatten([
+    for az in var.availability_zones : [
+      for pair in(az.public_private_subnet_pairs) : {
+        az   = az
+        cidr = pair.cidr
+      }
+    ]
+  ])
+  cidr_block        = each.value.cidr
+  availability_zone = each.value.az
 
   depends_on = [
     aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr,
@@ -11,7 +18,7 @@ resource "aws_subnet" "private_subnets" {
   ]
 
   tags = {
-    Name = "Private Subnet (${lookup(var.public_private_subnet_pairs[count.index], "az")})"
+    Name = "Private Subnet (${each.value.az})"
     Tier = "Private Subnets"
   }
 }

@@ -1,9 +1,16 @@
 # Create the public subnets for the public/private pairs
 resource "aws_subnet" "public_subnets" {
-  vpc_id            = aws_vpc.primary_vpc.id
-  count             = length(var.public_private_subnet_pairs)
-  cidr_block        = lookup(var.public_private_subnet_pairs[count.index], "public_cidr")
-  availability_zone = lookup(var.public_private_subnet_pairs[count.index], "az")
+  vpc_id = aws_vpc.primary_vpc.id
+  for_each = flatten([
+    for az in var.availability_zones : [
+      for pair in(az.public_private_subnet_pairs) : {
+        az   = az
+        cidr = pair.public_cidr
+      }
+    ]
+  ])
+  cidr_block        = each.value.cidr
+  availability_zone = each.value.az
 
   depends_on = [
     aws_vpc_ipv4_cidr_block_association.utility_subnet_cidr,
@@ -11,7 +18,7 @@ resource "aws_subnet" "public_subnets" {
   ]
 
   tags = {
-    Name = "Public Subnet (${lookup(var.public_private_subnet_pairs[count.index], "az")})"
+    Name = "Public Subnet (${each.value.az})"
     Tier = "Public Subnets"
   }
 }
@@ -46,8 +53,8 @@ resource "aws_route" "public_to_igw" {
 # hideous hack here because terraform cannot count computed lists. We
 # instead use the total number of public subnets defined in vars.
 resource "aws_route_table_association" "public_subnet_routes" {
-  count          = length(var.public_private_subnet_pairs)
+  for_each       = aws_subnet.public_subnets
   route_table_id = aws_route_table.public_route_table.id
-  subnet_id      = element(aws_subnet.public_subnets.*.id, count.index)
+  subnet_id      = each.value.id
   depends_on     = [aws_route_table.public_route_table]
 }
