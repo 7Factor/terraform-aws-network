@@ -16,15 +16,11 @@ variable "vpc_name" {
 # A list of availability zones and their associated subnet pairs. Every private subnet
 # needs a corresponding public subnet. This is especially useful if you're going to load
 # balance something inside a private subnet.
-variable "availability_zones" {
-  type = list(object({
-    az = string,
-    public_private_subnet_pairs = list(object({
-      cidr         = string,
-      public_cidr  = string,
-      utility_cidr = string
-    }))
-  }))
+variable "az_subnet_pairs" {
+  type = map(list(object({
+    cidr         = string,
+    public_cidr  = string
+  })))
   description = "A list of availability zones with associated public and private subnet pairs."
 }
 

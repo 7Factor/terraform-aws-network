@@ -2,7 +2,7 @@
 resource "aws_subnet" "public_subnets" {
   vpc_id = aws_vpc.primary_vpc.id
   for_each = flatten([
-    for az in var.availability_zones : [
+    for az in var.az_subnet_pairs : [
       for pair in(az.public_private_subnet_pairs) : {
         az   = az
         cidr = pair.public_cidr

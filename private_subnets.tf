@@ -2,10 +2,10 @@
 resource "aws_subnet" "private_subnets" {
   vpc_id = aws_vpc.primary_vpc.id
   for_each = flatten([
-    for az in var.availability_zones : [
-      for pair in(az.public_private_subnet_pairs) : {
+    for az, subnets in var.az_subnet_pairs : [
+      for subnet in subnets : {
         az   = az
-        cidr = pair.cidr
+        cidr = subnet.cidr
       }
     ]
   ])
@@ -26,7 +26,7 @@ resource "aws_subnet" "private_subnets" {
 
 # Create the EIPs for the NAT gateways first.
 resource "aws_eip" "nat_ips" {
-  count = length(var.availability_zones)
+  count = length(var.az_subnet_pairs)
   vpc   = true
 
   tags = {
@@ -37,12 +37,15 @@ resource "aws_eip" "nat_ips" {
 # NAT gateways
 resource "aws_nat_gateway" "nat_gws" {
   for_each = flatten([
-    for index, az in var.availability_zones : [
-      for utility_subnet in aws_subnet.utility_subnets : utility_subnet if utility_subnet.availability_zone == az
+    for index, az in keys(var.az_subnet_pairs) : [
+      for utility_subnet in aws_subnet.utility_subnets : {
+        utility_subnet_id = utility_subnet.id
+        index = index
+      } if utility_subnet.availability_zone == az
     ]
   ])
   subnet_id     = each.value.id
-  allocation_id = aws_eip.nat_ips[each.key].id
+  allocation_id = aws_eip.nat_ips[each.value.index].id
   depends_on    = [aws_eip.nat_ips]
 
   tags = {
@@ -51,7 +54,7 @@ resource "aws_nat_gateway" "nat_gws" {
 }
 
 resource "aws_route_table" "private_route_tables" {
-  for_each   = var.availability_zones
+  for_each   = var.az_subnet_pairs
   vpc_id     = aws_vpc.primary_vpc.id
   depends_on = [aws_nat_gateway.nat_gws]
 

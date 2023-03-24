@@ -1,5 +1,5 @@
 resource "aws_subnet" "utility_subnets" {
-  for_each                = var.availability_zones
+  for_each                = var.az_subnet_pairs
   vpc_id                  = aws_vpc.primary_vpc.id
   cidr_block              = var.utility_subnet_cidr
   map_public_ip_on_launch = var.enable_utility_public_ips

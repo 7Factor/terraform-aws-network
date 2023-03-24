@@ -37,7 +37,7 @@ resource "aws_instance" "bastion_hosts" {
 
   lifecycle {
     precondition {
-      condition     = var.bastion_count <= length(var.availability_zones)
+      condition     = var.bastion_count <= length(var.az_subnet_pairs)
       error_message = "You must have an availability zone declared for each bastion host. Multiple bastion hosts in each availability zone is not supported"
     }
   }
