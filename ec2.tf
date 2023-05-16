@@ -35,3 +35,11 @@ resource "aws_instance" "bastion_hosts" {
 
   user_data = base64encode(templatefile("${path.module}/bastion.tftpl", {}))
 }
+
+resource "aws_eip" "bastion_eips" {
+  for_each                  = aws_instance.bastion_hosts
+  vpc                       = true
+  instance                  = each.value.id 
+  public_ipv4_pool          = "amazon"
+  depends_on                = [aws_internet_gateway.igw]
+}
