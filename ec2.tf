@@ -37,9 +37,9 @@ resource "aws_instance" "bastion_hosts" {
 }
 
 resource "aws_eip" "bastion_eips" {
-  for_each                  = aws_instance.bastion_hosts.*.id
+  for_each                  = toset(aws_instance.bastion_hosts.*.id)
   vpc                       = true
-  instance                  = each.value
+  instance                  = each.key
   public_ipv4_pool          = "amazon"
   depends_on                = [aws_internet_gateway.igw]
 }
