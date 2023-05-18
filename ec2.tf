@@ -41,5 +41,5 @@ resource "aws_eip" "bastion_eips" {
   vpc                       = true
   instance                  = each.key
   public_ipv4_pool          = "amazon"
-  depends_on                = [aws_internet_gateway.igw]
+  depends_on                = [aws_internet_gateway.igw, aws_instance.bastion_hosts]
 }
