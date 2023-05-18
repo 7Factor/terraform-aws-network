@@ -48,7 +48,7 @@ data "aws_route53_zone" "root_zone" {
 }
 
 resource "aws_route53_record" "a_record" {
-  count   = enable_bastion_eip ? 1 : 0
+  count   = var.enable_bastion_eip ? 1 : 0
   type    = "A"
   name    = var.bastion_route53.record.name
   zone_id = data.aws_route53_zone.root_zone.zone_id
