@@ -52,5 +52,5 @@ resource "aws_route53_record" "a_record" {
   type    = "A"
   name    = var.bastion_route53.record.name
   zone_id = data.aws_route53_zone.root_zone.zone_id
-  records = [aws_eip.bastion_eip.public_ip]
+  records = [aws_eip.bastion_eip[0].public_ip]
 }
