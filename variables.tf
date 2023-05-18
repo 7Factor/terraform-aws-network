@@ -89,3 +89,22 @@ variable "enable_dns_support" {
   type        = bool
   default     = true
 }
+
+variable "enable_bastion_eip" {
+  description = "A boolean flag to enable/disable bastion EIPs. Enabling this is required for using route53 to access the bastion host."
+  type        = bool
+  default     = false
+}
+
+variable "bastion_route53" {
+  description = "Route53 configuration."
+  type = object({
+    zone = object({
+      name = string
+    })
+    record = object({
+      name = string
+    })
+  })
+  default  = null
+}

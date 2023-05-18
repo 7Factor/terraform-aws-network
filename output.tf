@@ -33,19 +33,19 @@ output "addl_private_subnets" {
   description = "Subnets configured with no public pairs. This doesn't mean they don't have a corresponding public subnet."
 }
 
-output "bastion_host_ids" {
-  value       = aws_instance.bastion_hosts.*.id
-  description = "A list of ids for your bastion hosts."
+output "bastion_host_id" {
+  value       = aws_instance.bastion_host.id
+  description = "Id of your bastion host."
 }
 
-output "bastion_host_public_ips" {
-  value       = aws_instance.bastion_hosts.*.public_ip
-  description = "A list of public IP addresses for your bastion hosts."
+output "bastion_host_public_ip" {
+  value       = var.enable_bastion_eip ? aws_eip.bastion_eip[0].public_ip : aws_instance.bastion_host.public_ip
+  description = "Public EIP address for your bastion host."
 }
 
-output "bastion_host_private_ips" {
-  value       = aws_instance.bastion_hosts.*.private_ip
-  description = "A list of pribate IP addresses for your bastion hosts."
+output "bastion_host_private_ip" {
+  value       = var.enable_bastion_eip ? aws_eip.bastion_eip[0].private_ip : aws_instance.bastion_host.private_ip
+  description = "Private EIP address for your bastion host."
 }
 
 output "vpc_id" {
