@@ -18,8 +18,7 @@ data "aws_ami" "ec2_linux" {
   }
 }
 
-resource "aws_instance" "bastion_hosts" {
-  count                = var.bastion_count
+resource "aws_instance" "bastion_host" {
   ami                  = data.aws_ami.ec2_linux.id
   instance_type        = var.bastion_instance_type
   subnet_id            = aws_subnet.utility_subnet.id
@@ -36,10 +35,22 @@ resource "aws_instance" "bastion_hosts" {
   user_data = base64encode(templatefile("${path.module}/bastion.tftpl", {}))
 }
 
-resource "aws_eip" "bastion_eips" {
-  for_each                  = toset(aws_instance.bastion_hosts.*.id)
+resource "aws_eip" "bastion_eip" {
+  count                     = enable_bastion_eip ? 1 : 0
   vpc                       = true
-  instance                  = each.key
+  instance                  = aws_instance.bastion_host.id
   public_ipv4_pool          = "amazon"
-  depends_on                = [aws_internet_gateway.igw, aws_instance.bastion_hosts]
+  depends_on                = [aws_internet_gateway.igw]
+}
+
+data "aws_route53_zone" "root_zone" {
+  name = var.bastion_route53.zone.name
+}
+
+resource "aws_route53_record" "a_record" {
+  count   = enable_bastion_eip ? 1 : 0
+  type    = "A"
+  name    = var.bastion_route53.record.name
+  zone_id = data.aws_route53_zone.root_zone.zone_id
+  records = [aws_eip.bastion_eip.public_ip]
 }
