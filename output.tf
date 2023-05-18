@@ -39,12 +39,12 @@ output "bastion_host_id" {
 }
 
 output "bastion_host_public_ip" {
-  value       = aws_eip.bastion_eip.public_ip
+  value       = var.enable_bastion_eip ? aws_eip.bastion_eip[0].public_ip : aws_instance.bastion_host.public_ip
   description = "Public EIP address for your bastion host."
 }
 
 output "bastion_host_private_ip" {
-  value       = aws_eip.bastion_eip.private_ip
+  value       = var.enable_bastion_eip ? aws_eip.bastion_eip[0].private_ip : aws_instance.bastion_host.private_ip
   description = "Private EIP address for your bastion host."
 }
 
