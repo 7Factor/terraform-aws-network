@@ -36,7 +36,7 @@ resource "aws_instance" "bastion_host" {
 }
 
 resource "aws_eip" "bastion_eip" {
-  count                     = enable_bastion_eip ? 1 : 0
+  count                     = var.enable_bastion_eip ? 1 : 0
   vpc                       = true
   instance                  = aws_instance.bastion_host.id
   public_ipv4_pool          = "amazon"
