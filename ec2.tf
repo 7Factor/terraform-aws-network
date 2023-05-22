@@ -58,7 +58,7 @@ resource "aws_route53_record" "eip_a_record" {
   count   = local.enable_single_bastion_eip ? 1 : 0
   type    = "A"
   name    = var.bastion_route53.record.name
-  zone_id = data.aws_route53_zone.root_zone.zone_id
+  zone_id = data.aws_route53_zone.root_zone[0].zone_id
   records = [aws_eip.single_bastion_eip[0].public_ip]
   ttl     = 300
 }
