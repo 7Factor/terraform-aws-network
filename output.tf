@@ -39,13 +39,13 @@ output "bastion_host_ids" {
 }
 
 output "bastion_host_public_ips" {
-  value       = aws_instance.bastion_hosts.*.public_ip
+  value       = local.enable_single_bastion_eip ? [aws_eip.single_bastion_eip[0].public_ip] : aws_instance.bastion_hosts.*.public_ip
   description = "A list of public IP addresses for your bastion hosts."
 }
 
 output "bastion_host_private_ips" {
-  value       = aws_instance.bastion_hosts.*.private_ip
-  description = "A list of pribate IP addresses for your bastion hosts."
+  value       = local.enable_single_bastion_eip ? [aws_eip.single_bastion_eip[0].private_ip] : aws_instance.bastion_hosts.*.private_ip
+  description = "A list of private IP addresses for your bastion hosts."
 }
 
 output "vpc_id" {

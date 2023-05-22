@@ -89,3 +89,16 @@ variable "enable_dns_support" {
   type        = bool
   default     = true
 }
+
+variable "bastion_route53" {
+  description = "Route53 configuration."
+  type = object({
+    zone = object({
+      name = string
+    })
+    record = object({
+      name = string
+    })
+  })
+  default = null
+}

@@ -28,10 +28,37 @@ resource "aws_instance" "bastion_hosts" {
 
   tags = {
     "Patch Group" = local.bastion_patch_group_name
-    Name          = "${var.vpc_name} Bastion Host ${var.bastion_count}"
+    Name          = "${var.vpc_name} Bastion Host ${count.index}"
   }
 
   vpc_security_group_ids = [aws_security_group.utility_hosts.id]
 
   user_data = base64encode(templatefile("${path.module}/bastion.tftpl", {}))
+}
+
+
+locals {
+  enable_single_bastion_eip = var.bastion_count == 1 && var.bastion_route53 != null
+}
+
+resource "aws_eip" "single_bastion_eip" {
+  count                     = local.enable_single_bastion_eip ? 1 : 0
+  vpc                       = true
+  instance                  = aws_instance.bastion_hosts[0].id
+  public_ipv4_pool          = "amazon"
+  depends_on                = [aws_internet_gateway.igw]
+}
+
+data "aws_route53_zone" "root_zone" {
+  count = local.enable_single_bastion_eip ? 1 : 0
+  name  = var.bastion_route53.zone.name
+}
+
+resource "aws_route53_record" "eip_a_record" {
+  count   = local.enable_single_bastion_eip ? 1 : 0
+  type    = "A"
+  name    = var.bastion_route53.record.name
+  zone_id = data.aws_route53_zone.root_zone.zone_id
+  records = [aws_eip.single_bastion_eip[0].public_ip]
+  ttl     = 300
 }
