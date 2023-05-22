@@ -93,7 +93,9 @@ module "networking" {
 ```
 
 ### EIP and Route53 behavior
-If `bastion_count = 1` and `bastion_route53` is provided, the bastion will be assigned an EIP and a Route53 record will be created for it. If `bastion_count > 1` or `bastion_route53` is not provided, the bastion will not be assigned an EIP and no Route53 record will be created for it.
+If `bastion_count = 1` and `bastion_route53` is provided, the bastion will be assigned an EIP and a Route53 record will be created for it. 
+If `bastion_count > 1` or `bastion_route53` is not provided, the bastion will not be assigned an EIP and no Route53 record will be created for it.
+This will allow you to define an EIP and Route53 record for a single bastion, but not for a bastion autoscaling group.
 
 ## Migrating to Terraform Registry version
 
